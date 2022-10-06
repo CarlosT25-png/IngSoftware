@@ -1,0 +1,730 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="shoemarketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shoemarket.dbo.carrito' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="carrito">
+          <Key>
+            <PropertyRef Name="producto_id" />
+            <PropertyRef Name="usuario_id" />
+          </Key>
+          <Property Name="producto_id" Type="int" Nullable="false" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_categoria" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="grupo_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="direccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ciudad" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="codigo_postal" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="detalle" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="pais" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="grupo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_grupo" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="metodo_de_pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipoPago" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="orden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="pago_id" Type="int" Nullable="false" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+          <Property Name="orden_detalle_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="orden_detalle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="precioProducto" Type="float" Nullable="false" />
+          <Property Name="producto_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_producto" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="imagen" Type="varchar" MaxLength="2083" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="precio" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="stock" Type="int" Nullable="false" />
+          <Property Name="categoria_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rol">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreRol" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="celularUsuario" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="estado" Type="bit" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="rol_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__carrito__product__59FA5E80">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="carrito" Type="Self.carrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carrito">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__carrito__usuario__5AEE82B9">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="carrito" Type="Self.carrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carrito">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__direccion__usuar__5DCAEF64">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="direccion" Type="Self.direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="direccion">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__metodo_de__usuar__4CA06362">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="metodo_de_pago" Type="Self.metodo_de_pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="metodo_de_pago">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__orden_det__5812160E">
+          <End Role="orden_detalle" Type="Self.orden_detalle" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orden_detalle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="orden_detalle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__pago_id__5629CD9C">
+          <End Role="metodo_de_pago" Type="Self.metodo_de_pago" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="metodo_de_pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="pago_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__usuario_i__571DF1D5">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden_det__produ__534D60F1">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="orden_detalle" Type="Self.orden_detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden_detalle">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__usuario__rol_id__49C3F6B7">
+          <End Role="rol" Type="Self.rol" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rol">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categoria_id">
+          <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="categoria_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_grupo_id">
+          <End Role="grupo" Type="Self.grupo" Multiplicity="1" />
+          <End Role="categoria" Type="Self.categoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="grupo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="categoria">
+              <PropertyRef Name="grupo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="shoemarketModelStoreContainer">
+          <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="direccion" EntityType="Self.direccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="grupo" EntityType="Self.grupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="metodo_de_pago" EntityType="Self.metodo_de_pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="orden" EntityType="Self.orden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="orden_detalle" EntityType="Self.orden_detalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rol" EntityType="Self.rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="carrito" EntityType="Self.carrito" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[carrito].[producto_id] AS [producto_id], 
+[carrito].[usuario_id] AS [usuario_id]
+FROM [dbo].[carrito] AS [carrito]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__carrito__product__59FA5E80" Association="Self.FK__carrito__product__59FA5E80">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="carrito" EntitySet="carrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__carrito__usuario__5AEE82B9" Association="Self.FK__carrito__usuario__5AEE82B9">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="carrito" EntitySet="carrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__direccion__usuar__5DCAEF64" Association="Self.FK__direccion__usuar__5DCAEF64">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="direccion" EntitySet="direccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__metodo_de__usuar__4CA06362" Association="Self.FK__metodo_de__usuar__4CA06362">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="metodo_de_pago" EntitySet="metodo_de_pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__orden_det__5812160E" Association="Self.FK__orden__orden_det__5812160E">
+            <End Role="orden_detalle" EntitySet="orden_detalle" />
+            <End Role="orden" EntitySet="orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__pago_id__5629CD9C" Association="Self.FK__orden__pago_id__5629CD9C">
+            <End Role="metodo_de_pago" EntitySet="metodo_de_pago" />
+            <End Role="orden" EntitySet="orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__usuario_i__571DF1D5" Association="Self.FK__orden__usuario_i__571DF1D5">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="orden" EntitySet="orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden_det__produ__534D60F1" Association="Self.FK__orden_det__produ__534D60F1">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="orden_detalle" EntitySet="orden_detalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK__usuario__rol_id__49C3F6B7" Association="Self.FK__usuario__rol_id__49C3F6B7">
+            <End Role="rol" EntitySet="rol" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categoria_id" Association="Self.FK_categoria_id">
+            <End Role="categoria" EntitySet="categoria" />
+            <End Role="producto" EntitySet="producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_grupo_id" Association="Self.FK_grupo_id">
+            <End Role="grupo" EntitySet="grupo" />
+            <End Role="categoria" EntitySet="categoria" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="shoemarketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_categoria" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="grupo_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="productoes" Relationship="Self.FK_categoria_id" FromRole="categoria" ToRole="producto" />
+          <NavigationProperty Name="grupo" Relationship="Self.FK_grupo_id" FromRole="categoria" ToRole="grupo" />
+        </EntityType>
+        <EntityType Name="direccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ciudad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigo_postal" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="detalle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pais" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__direccion__usuar__5DCAEF64" FromRole="direccion" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="grupo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_grupo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="categorias" Relationship="Self.FK_grupo_id" FromRole="grupo" ToRole="categoria" />
+        </EntityType>
+        <EntityType Name="metodo_de_pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipoPago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__metodo_de__usuar__4CA06362" FromRole="metodo_de_pago" ToRole="usuario" />
+          <NavigationProperty Name="ordens" Relationship="Self.FK__orden__pago_id__5629CD9C" FromRole="metodo_de_pago" ToRole="orden" />
+        </EntityType>
+        <EntityType Name="orden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="pago_id" Type="Int32" Nullable="false" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <Property Name="orden_detalle_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="metodo_de_pago" Relationship="Self.FK__orden__pago_id__5629CD9C" FromRole="orden" ToRole="metodo_de_pago" />
+          <NavigationProperty Name="orden_detalle" Relationship="Self.FK__orden__orden_det__5812160E" FromRole="orden" ToRole="orden_detalle" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__orden__usuario_i__571DF1D5" FromRole="orden" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="orden_detalle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="precioProducto" Type="Double" Nullable="false" />
+          <Property Name="producto_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ordens" Relationship="Self.FK__orden__orden_det__5812160E" FromRole="orden_detalle" ToRole="orden" />
+          <NavigationProperty Name="producto" Relationship="Self.FK__orden_det__produ__534D60F1" FromRole="orden_detalle" ToRole="producto" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_producto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="imagen" Type="String" MaxLength="2083" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="stock" Type="Int32" Nullable="false" />
+          <Property Name="categoria_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="categoria" Relationship="Self.FK_categoria_id" FromRole="producto" ToRole="categoria" />
+          <NavigationProperty Name="orden_detalle" Relationship="Self.FK__orden_det__produ__534D60F1" FromRole="producto" ToRole="orden_detalle" />
+          <NavigationProperty Name="usuarios" Relationship="Self.carrito" FromRole="producto" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="rol">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreRol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="usuarios" Relationship="Self.FK__usuario__rol_id__49C3F6B7" FromRole="rol" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="celularUsuario" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado" Type="Boolean" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rol_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="direccions" Relationship="Self.FK__direccion__usuar__5DCAEF64" FromRole="usuario" ToRole="direccion" />
+          <NavigationProperty Name="metodo_de_pago" Relationship="Self.FK__metodo_de__usuar__4CA06362" FromRole="usuario" ToRole="metodo_de_pago" />
+          <NavigationProperty Name="ordens" Relationship="Self.FK__orden__usuario_i__571DF1D5" FromRole="usuario" ToRole="orden" />
+          <NavigationProperty Name="rol" Relationship="Self.FK__usuario__rol_id__49C3F6B7" FromRole="usuario" ToRole="rol" />
+          <NavigationProperty Name="productoes" Relationship="Self.carrito" FromRole="usuario" ToRole="producto" />
+        </EntityType>
+        <Association Name="FK_categoria_id">
+          <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="categoria_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_grupo_id">
+          <End Role="grupo" Type="Self.grupo" Multiplicity="1" />
+          <End Role="categoria" Type="Self.categoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="grupo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="categoria">
+              <PropertyRef Name="grupo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__direccion__usuar__5DCAEF64">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="direccion" Type="Self.direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="direccion">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__metodo_de__usuar__4CA06362">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="metodo_de_pago" Type="Self.metodo_de_pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="metodo_de_pago">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__pago_id__5629CD9C">
+          <End Role="metodo_de_pago" Type="Self.metodo_de_pago" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="metodo_de_pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="pago_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__orden_det__5812160E">
+          <End Role="orden_detalle" Type="Self.orden_detalle" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orden_detalle">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="orden_detalle_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden__usuario_i__571DF1D5">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="orden" Type="Self.orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__orden_det__produ__534D60F1">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="orden_detalle" Type="Self.orden_detalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orden_detalle">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__usuario__rol_id__49C3F6B7">
+          <End Role="rol" Type="Self.rol" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rol">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="carrito">
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="shoemarketEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categorias" EntityType="Self.categoria" />
+          <EntitySet Name="direccions" EntityType="Self.direccion" />
+          <EntitySet Name="grupoes" EntityType="Self.grupo" />
+          <EntitySet Name="metodo_de_pago" EntityType="Self.metodo_de_pago" />
+          <EntitySet Name="ordens" EntityType="Self.orden" />
+          <EntitySet Name="orden_detalle" EntityType="Self.orden_detalle" />
+          <EntitySet Name="productoes" EntityType="Self.producto" />
+          <EntitySet Name="rols" EntityType="Self.rol" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="usuarios" EntityType="Self.usuario" />
+          <AssociationSet Name="FK_categoria_id" Association="Self.FK_categoria_id">
+            <End Role="categoria" EntitySet="categorias" />
+            <End Role="producto" EntitySet="productoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_grupo_id" Association="Self.FK_grupo_id">
+            <End Role="grupo" EntitySet="grupoes" />
+            <End Role="categoria" EntitySet="categorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK__direccion__usuar__5DCAEF64" Association="Self.FK__direccion__usuar__5DCAEF64">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="direccion" EntitySet="direccions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__metodo_de__usuar__4CA06362" Association="Self.FK__metodo_de__usuar__4CA06362">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="metodo_de_pago" EntitySet="metodo_de_pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__pago_id__5629CD9C" Association="Self.FK__orden__pago_id__5629CD9C">
+            <End Role="metodo_de_pago" EntitySet="metodo_de_pago" />
+            <End Role="orden" EntitySet="ordens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__orden_det__5812160E" Association="Self.FK__orden__orden_det__5812160E">
+            <End Role="orden_detalle" EntitySet="orden_detalle" />
+            <End Role="orden" EntitySet="ordens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden__usuario_i__571DF1D5" Association="Self.FK__orden__usuario_i__571DF1D5">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="orden" EntitySet="ordens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__orden_det__produ__534D60F1" Association="Self.FK__orden_det__produ__534D60F1">
+            <End Role="producto" EntitySet="productoes" />
+            <End Role="orden_detalle" EntitySet="orden_detalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK__usuario__rol_id__49C3F6B7" Association="Self.FK__usuario__rol_id__49C3F6B7">
+            <End Role="rol" EntitySet="rols" />
+            <End Role="usuario" EntitySet="usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="carrito" Association="Self.carrito">
+            <End Role="producto" EntitySet="productoes" />
+            <End Role="usuario" EntitySet="usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="shoemarketModelStoreContainer" CdmEntityContainer="shoemarketEntities">
+          <EntitySetMapping Name="categorias">
+            <EntityTypeMapping TypeName="shoemarketModel.categoria">
+              <MappingFragment StoreEntitySet="categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre_categoria" ColumnName="nombre_categoria" />
+                <ScalarProperty Name="grupo_id" ColumnName="grupo_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="direccions">
+            <EntityTypeMapping TypeName="shoemarketModel.direccion">
+              <MappingFragment StoreEntitySet="direccion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="codigo_postal" ColumnName="codigo_postal" />
+                <ScalarProperty Name="detalle" ColumnName="detalle" />
+                <ScalarProperty Name="pais" ColumnName="pais" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="grupoes">
+            <EntityTypeMapping TypeName="shoemarketModel.grupo">
+              <MappingFragment StoreEntitySet="grupo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre_grupo" ColumnName="nombre_grupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="metodo_de_pago">
+            <EntityTypeMapping TypeName="shoemarketModel.metodo_de_pago">
+              <MappingFragment StoreEntitySet="metodo_de_pago">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tipoPago" ColumnName="tipoPago" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ordens">
+            <EntityTypeMapping TypeName="shoemarketModel.orden">
+              <MappingFragment StoreEntitySet="orden">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="pago_id" ColumnName="pago_id" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+                <ScalarProperty Name="orden_detalle_id" ColumnName="orden_detalle_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orden_detalle">
+            <EntityTypeMapping TypeName="shoemarketModel.orden_detalle">
+              <MappingFragment StoreEntitySet="orden_detalle">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="precioProducto" ColumnName="precioProducto" />
+                <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productoes">
+            <EntityTypeMapping TypeName="shoemarketModel.producto">
+              <MappingFragment StoreEntitySet="producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre_producto" ColumnName="nombre_producto" />
+                <ScalarProperty Name="imagen" ColumnName="imagen" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
+                <ScalarProperty Name="categoria_id" ColumnName="categoria_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rols">
+            <EntityTypeMapping TypeName="shoemarketModel.rol">
+              <MappingFragment StoreEntitySet="rol">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombreRol" ColumnName="nombreRol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="shoemarketModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="shoemarketModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="celularUsuario" ColumnName="celularUsuario" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="carrito" TypeName="shoemarketModel.carrito" StoreEntitySet="carrito">
+            <EndProperty Name="producto">
+              <ScalarProperty Name="id" ColumnName="producto_id" />
+            </EndProperty>
+            <EndProperty Name="usuario">
+              <ScalarProperty Name="id" ColumnName="usuario_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
